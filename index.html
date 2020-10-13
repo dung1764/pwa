@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWA website</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <ul id="list"></ul>
+  <img src="dog.svg" alt="dog">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then((reg) => {
+            console.log('Service worker registered.', reg);
+          });
+      });
+    }
+
+    const list = document.getElementById('list');
+    fetch('http://localhost:3000/people')
+      .then(res => res.json())
+      .then(json => {
+        list.innerHTML = json.map(item => `<li>${item.name}</li>`).join('');
+      })
+      .catch(err => console.log(err))
+  </script>
+</body>
+
+</html>
